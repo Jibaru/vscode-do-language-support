@@ -1,0 +1,36 @@
+{
+  "fileTypes": ["do"],
+  "name": "Do Language",
+  "patterns": [
+    {
+      "name": "keyword.control.do",
+      "match": "\\b(do|let)\\b"
+    },
+    {
+      "name": "string.quoted.double.do",
+      "match": "\".*?\""
+    },
+    {
+      "name": "constant.numeric.do",
+      "match": "\\b\\d+\\b"
+    },
+    {
+      "name": "constant.language.boolean.do",
+      "match": "\\b(true|false)\\b"
+    },
+    {
+      "name": "keyword.operator.assignment.do",
+      "match": "="
+    },
+    {
+      "name": "punctuation.terminator.do",
+      "match": ";"
+    },
+    {
+      "name": "punctuation.definition.block.do",
+      "match": "[{}]"
+    }
+  ],
+  "repository": {},
+  "scopeName": "source.do"
+}
