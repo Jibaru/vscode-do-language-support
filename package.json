@@ -10,16 +10,38 @@
     "Programming Languages"
   ],
   "contributes": {
-    "languages": [{
-      "id": "do",
-      "aliases": ["do", "do"],
-      "extensions": [".do"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "do",
-      "scopeName": "source.do",
-      "path": "./syntaxes/do.tmLanguage.json"
-    }]
+    "languages": [
+      {
+        "id": "do",
+        "aliases": [
+          "do",
+          "do"
+        ],
+        "extensions": [
+          ".do"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "do",
+        "scopeName": "source.do",
+        "path": "./syntaxes/do.tmLanguage.json"
+      }
+    ]
+  },
+  "repository": {
+    "url": "https://github.com/Jibaru/vscode-do-language-support",
+    "type": "git"
+  },
+  "keywords": [
+    "syntax highlighting",
+    "do files",
+    "programming",
+    "http requests"
+  ],
+  "author": {
+    "name": "Jibaru"
   }
 }
