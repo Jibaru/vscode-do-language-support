@@ -1,8 +1,8 @@
 {
   "name": "do-language-support",
-  "displayName": "do language support",
-  "description": "add do language support",
-  "version": "0.0.1",
+  "displayName": "Do Language Support",
+  "description": "add .do files language support",
+  "version": "0.1.1",
   "engines": {
     "vscode": "^1.90.0"
   },
@@ -43,5 +43,6 @@
   ],
   "author": {
     "name": "Jibaru"
-  }
+  },
+  "icon": "logo.png"
 }

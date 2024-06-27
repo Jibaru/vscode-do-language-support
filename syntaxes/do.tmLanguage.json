@@ -29,6 +29,18 @@
     {
       "name": "punctuation.definition.block.do",
       "match": "[{}]"
+    },
+    {
+      "name": "support.function.do",
+      "match": "\\b\\w+\\s*\\("
+    },
+    {
+      "name": "variable.interpolated.do",
+      "match": "\\$\\w+"
+    },
+    {
+      "name": "entity.name.tag.do",
+      "match": "\\b(method|url|params|headers|body)\\b"
     }
   ],
   "repository": {},
