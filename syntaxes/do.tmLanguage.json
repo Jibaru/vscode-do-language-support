@@ -40,7 +40,7 @@
     },
     {
       "name": "entity.name.tag.do",
-      "match": "\\b(method|url|params|headers|body)\\b"
+      "match": "\\b(method|url|params|query|headers|body)\\b"
     }
   ],
   "repository": {},
