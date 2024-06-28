@@ -3,12 +3,34 @@
   "name": "Do Language",
   "patterns": [
     {
-      "name": "keyword.control.do",
-      "match": "\\b(do|let)\\b"
+      "name": "comment.line.double-slash.do",
+      "match": "//.*$"
     },
     {
       "name": "string.quoted.double.do",
-      "match": "\".*?\""
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "variable.interpolated.do",
+          "match": "\\$\\w+"
+        }
+      ]
+    },
+    {
+      "name": "string.quoted.backtick.do",
+      "begin": "`",
+      "end": "`",
+      "patterns": [
+        {
+          "name": "variable.interpolated.do",
+          "match": "\\$\\w+"
+        }
+      ]
+    },
+    {
+      "name": "keyword.control.do",
+      "match": "\\b(do|let)\\b"
     },
     {
       "name": "constant.numeric.do",
@@ -33,10 +55,6 @@
     {
       "name": "support.function.do",
       "match": "\\b\\w+\\s*\\("
-    },
-    {
-      "name": "variable.interpolated.do",
-      "match": "\\$\\w+"
     },
     {
       "name": "entity.name.tag.do",
