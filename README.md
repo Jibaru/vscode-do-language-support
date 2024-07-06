@@ -17,11 +17,13 @@ This Visual Studio Code extension provides language support for `.do` files with
 Here is an example of a `.do` file with the syntax highlighting provided by this extension:
 
 ```do
+// comment
 let {
     var1 = 1;
     var2 = "hello";
     var3 = true;
-    var4 = false;
+    var4 = false; // another comment
+    var5 = env("VAR_1", "default");
 }
 
 do {
