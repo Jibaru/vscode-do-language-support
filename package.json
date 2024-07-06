@@ -9,6 +9,11 @@
   "categories": [
     "Programming Languages"
   ],
+  "activationEvents": [
+    "onLanguage:do",
+    "onCommand:extension.runDoFile",
+    "onCommand:extension.setDoExecutablePath"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "languages": [
