@@ -1,0 +1,16 @@
+{
+  "iconDefinitions": {
+    "doIcon": {
+      "iconPath": "../icons/do-icon.svg"
+    }
+  },
+  "fileExtensions": {
+    "do": "doIcon"
+  },
+  "folderNames": {
+    "do": "doIcon"
+  },
+  "languageIds": {
+    "do": "doIcon"
+  }
+}

@@ -1,14 +1,15 @@
 {
   "name": "do-language-support",
   "displayName": "Do Language Support",
-  "description": "add .do files language support",
-  "version": "0.2.0",
+  "description": "Add language support for .do files",
+  "version": "0.2.1",
   "engines": {
     "vscode": "^1.90.0"
   },
   "categories": [
     "Programming Languages"
   ],
+  "main": "./out/extension.js",
   "contributes": {
     "languages": [
       {
@@ -28,6 +29,47 @@
         "language": "do",
         "scopeName": "source.do",
         "path": "./syntaxes/do.tmLanguage.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "extension.runDoFile",
+        "title": "Run .do File",
+        "icon": {
+          "light": "images/play-light.svg",
+          "dark": "images/play-dark.svg"
+        }
+      },
+      {
+        "command": "extension.setDoExecutablePath",
+        "title": "do: set path to do executable"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "extension.runDoFile",
+          "when": "resourceLangId == do",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "Do Language Syntax Highlighting Configuration",
+      "properties": {
+        "doLanguageSyntaxHighlighting.doExecutablePath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the do executable"
+        }
+      }
+    },
+    "iconThemes": [
+      {
+        "id": "doIconTheme",
+        "label": "Do Icon Theme",
+        "path": "./icon-themes/do-icon-theme.json"
       }
     ]
   },
