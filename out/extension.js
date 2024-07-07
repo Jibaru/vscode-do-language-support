@@ -25,6 +25,29 @@ function activate(context) {
     }
   );
 
+  // Command to set the path to the environment variables file
+  let setEnvPath = vscode.commands.registerCommand(
+    "extension.setDoEnvironmentVariablesPath",
+    async function () {
+      const envPath = await vscode.window.showInputBox({
+        placeHolder: "Enter the path to the environment variables file",
+      });
+
+      if (envPath) {
+        await vscode.workspace
+          .getConfiguration()
+          .update(
+            "doLanguageSyntaxHighlighting.environmentVariablesPath",
+            envPath,
+            vscode.ConfigurationTarget.Global
+          );
+        vscode.window.showInformationMessage(
+          `Path to environment variables file set to: ${envPath}`
+        );
+      }
+    }
+  );
+
   // Command to run the .do file
   let runDoFile = vscode.commands.registerCommand(
     "extension.runDoFile",
@@ -36,6 +59,9 @@ function activate(context) {
         const doExecutablePath = vscode.workspace
           .getConfiguration()
           .get("doLanguageSyntaxHighlighting.doExecutablePath");
+        const envPath = vscode.workspace
+          .getConfiguration()
+          .get("doLanguageSyntaxHighlighting.environmentVariablesPath");
 
         if (!doExecutablePath) {
           vscode.window.showErrorMessage(
@@ -44,37 +70,38 @@ function activate(context) {
           return;
         }
 
-        exec(
-          `${doExecutablePath} ${filePath}`,
-          async (error, stdout, stderr) => {
-            const outputUri = vscode.Uri.parse(
-              "untitled:" + filePath + ".json"
-            );
-            const outputDocument = await vscode.workspace.openTextDocument(
-              outputUri
-            );
+        let doCommand = `${doExecutablePath} -f ${filePath}`;
 
-            await vscode.window
-              .showTextDocument(outputDocument, vscode.ViewColumn.Beside, true)
-              .then((editor) => {
-                const edit = new vscode.WorkspaceEdit();
-                edit.insert(outputUri, new vscode.Position(0, 0), "");
+        if (envPath) {
+          doCommand += ` -e ${envPath}`;
+        }
 
-                if (error) {
-                  edit.insert(
-                    outputUri,
-                    new vscode.Position(2, 0),
-                    `Error: ${stderr}`
-                  );
-                  vscode.window.showErrorMessage(`Error: ${stderr}`);
-                } else {
-                  edit.insert(outputUri, new vscode.Position(2, 0), stdout);
-                }
+        exec(doCommand, async (error, stdout, stderr) => {
+          const outputUri = vscode.Uri.parse("untitled:" + filePath + ".json");
+          const outputDocument = await vscode.workspace.openTextDocument(
+            outputUri
+          );
 
-                return vscode.workspace.applyEdit(edit);
-              });
-          }
-        );
+          await vscode.window
+            .showTextDocument(outputDocument, vscode.ViewColumn.Beside, true)
+            .then((editor) => {
+              const edit = new vscode.WorkspaceEdit();
+              edit.insert(outputUri, new vscode.Position(0, 0), "");
+
+              if (error) {
+                edit.insert(
+                  outputUri,
+                  new vscode.Position(2, 0),
+                  `Error: ${stderr}`
+                );
+                vscode.window.showErrorMessage(`Error: ${stderr}`);
+              } else {
+                edit.insert(outputUri, new vscode.Position(2, 0), stdout);
+              }
+
+              return vscode.workspace.applyEdit(edit);
+            });
+        });
       }
     }
   );

@@ -2,7 +2,7 @@
   "name": "do-language-support",
   "displayName": "Do Language Support",
   "description": "Add language support for .do files",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "engines": {
     "vscode": "^1.90.0"
   },
@@ -12,7 +12,8 @@
   "activationEvents": [
     "onLanguage:do",
     "onCommand:extension.runDoFile",
-    "onCommand:extension.setDoExecutablePath"
+    "onCommand:extension.setDoExecutablePath",
+    "onCommand:extension.setDoEnvironmentVariablesPath"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -48,6 +49,10 @@
       {
         "command": "extension.setDoExecutablePath",
         "title": "do: set path to do executable"
+      },
+      {
+        "command": "extension.setDoEnvironmentVariablesPath",
+        "title": "do: set path to environment variables file"
       }
     ],
     "menus": {
@@ -67,6 +72,11 @@
           "type": "string",
           "default": "",
           "description": "Path to the do executable"
+        },
+        "doLanguageSyntaxHighlighting.environmentVariablesPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the environment variables file"
         }
       }
     },
