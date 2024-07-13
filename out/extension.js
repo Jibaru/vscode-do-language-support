@@ -1,5 +1,6 @@
 const vscode = require("vscode");
 const { exec } = require("child_process");
+const { createHTMLFromResponse } = require("./render.js");
 
 function activate(context) {
   // Command to set the path to the do executable
@@ -53,9 +54,20 @@ function activate(context) {
     "extension.runDoFile",
     async function () {
       const editor = vscode.window.activeTextEditor;
+
       if (editor) {
         const document = editor.document;
         const filePath = document.fileName;
+        const panel = vscode.window.createWebviewPanel(
+          "doOutput",
+          "Do: " + filePath,
+          vscode.ViewColumn.Beside,
+          {}
+        );
+        const statusBarMessage = vscode.window.setStatusBarMessage(
+          "Running: " + filePath
+        );
+
         const doExecutablePath = vscode.workspace
           .getConfiguration()
           .get("doLanguageSyntaxHighlighting.doExecutablePath");
@@ -67,6 +79,7 @@ function activate(context) {
           vscode.window.showErrorMessage(
             "Path to 'do' executable is not set. Please set it using the command palette."
           );
+          statusBarMessage.dispose();
           return;
         }
 
@@ -77,35 +90,15 @@ function activate(context) {
         }
 
         exec(doCommand, async (error, stdout, stderr) => {
-          const outputUri = vscode.Uri.parse("untitled:" + filePath + ".json");
-          const outputDocument = await vscode.workspace.openTextDocument(
-            outputUri
-          );
-
-          await vscode.window
-            .showTextDocument(outputDocument, vscode.ViewColumn.Beside, true)
-            .then((editor) => {
-              const edit = new vscode.WorkspaceEdit();
-              edit.insert(outputUri, new vscode.Position(0, 0), "");
-
-              if (error) {
-                edit.insert(
-                  outputUri,
-                  new vscode.Position(2, 0),
-                  `Error: ${stderr}`
-                );
-                vscode.window.showErrorMessage(`Error: ${stderr}`);
-              } else {
-                edit.insert(outputUri, new vscode.Position(2, 0), stdout);
-              }
-
-              return vscode.workspace.applyEdit(edit);
-            });
+          const jsonData = JSON.parse(stdout);
+          panel.webview.html = createHTMLFromResponse(jsonData);
+          statusBarMessage.dispose();
         });
       }
     }
   );
 
+  context.subscriptions.push(setEnvPath);
   context.subscriptions.push(setExecutablePath);
   context.subscriptions.push(runDoFile);
 }

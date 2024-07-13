@@ -2,7 +2,7 @@
   "name": "do-language-support",
   "displayName": "Do Language Support",
   "description": "Add language support for .do files",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "engines": {
     "vscode": "^1.90.0"
   },
