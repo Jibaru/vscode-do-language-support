@@ -23,8 +23,11 @@ function createHTMLFromResponse(data) {
                 padding: 8px;
                 vertical-align: top;
             }
+            .row-title {
+              font-weight: bold;
+            }
             .json-content {
-                white-space: pre-wrap;
+              white-space: pre-wrap;
             }
         </style>
     `;
@@ -48,15 +51,11 @@ function createHTMLFromResponse(data) {
       }
     }
 
-    htmlContent += createTable(
-      "Response",
-      {
-        status_code: data.response.status_code,
-        body: body,
-        headers: data.response.headers,
-      },
-      true
-    );
+    htmlContent += createTable("Response", {
+      code: data.response.status_code,
+      body: body,
+      headers: data.response.headers,
+    });
   }
 
   htmlContent += `</body></html>`;
@@ -64,7 +63,7 @@ function createHTMLFromResponse(data) {
   return htmlContent;
 }
 
-function createTable(title, obj, isResponse = false) {
+function createTable(title, obj) {
   let table = `<table>
         <thead>
             <tr><th colspan="2">${title}</th></tr>
@@ -72,14 +71,27 @@ function createTable(title, obj, isResponse = false) {
         <tbody>`;
 
   for (const [key, value] of Object.entries(obj)) {
+    let content = value;
+    let isJson = false;
+    if (typeof value === "string") {
+      try {
+        content = JSON.parse(value);
+        content = JSON.stringify(content, null, 2);
+        isJson = true;
+      } catch (error) {
+        // is no json
+      }
+    }
+
+    if (typeof value === "object") {
+      content = JSON.stringify(value, null, 2);
+      isJson = true;
+    }
+
     table += `<tr>
-            <td>${key}</td>
-            <td class="${isResponse && key === "body" ? "json-content" : ""}">${
-      typeof value === "object" && key !== "body"
-        ? JSON.stringify(value, null, 2)
-        : value
-    }</td>
-        </tr>`;
+        <td class="row-title">${key}</td>
+        <td class="${isJson ? "json-content" : ""}">${content}</td>
+      </tr>`;
   }
 
   table += `</tbody></table>`;
